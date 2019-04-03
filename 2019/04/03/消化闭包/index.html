@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Description-->
+    
+        <meta name="description" content="mytac&#39;s blog，">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="mytac">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="digest-closure">
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="mytac&#39;s blog">
+
+    <!--Page Cover-->
+    
+        <meta property="og:image" content="">
+    
+
+    <!-- Title -->
+    
+    <title>digest-closure - mytac&#39;s blog</title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!--[if lt IE 8]>
+        <script src="/js/ie/html5shiv.js"></script>
+    <![endif]-->
+
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" href="/sass/ie8.css">
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="/sass/ie9.css">
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.css" type="text/css" rel="stylesheet">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Menu -->
+        <!-- Header -->
+<header id="header">
+    <div class="inner">
+
+        <!-- Logo -->
+        <a href="/" class="logo">
+            <span class="symbol"><img src="/images/logo.svg" alt=""></span><span class="title">mytac's blog</span>
+        </a>
+
+        <!-- Nav -->
+        <nav>
+            <ul>
+                <li><a href="#menu">Menu</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</header>
+
+<!-- Menu -->
+<nav id="menu">
+    <h2>Menu</h2>
+    <ul>
+        
+            <li>
+                <a href="/">Home</a>
+            </li>
+        
+            <li>
+                <a href="/archives">Archives</a>
+            </li>
+        
+            <li>
+                <a href="/about.html">About</a>
+            </li>
+        
+    </ul>
+</nav>
+
+
+        <div id="main">
+            <div class="inner">
+
+                <!-- Main Content -->
+                
+
+    <h1>digest-closure</h1>
+
+
+
+<!-- Gallery -->
+
+
+<!-- Content -->
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前写过关于闭包的文章，本来以为自己懂了，后来面试时被问到怀疑人生。才明白自己只是觉得自己明白了而已，如果说要将一个东西理解的彻彻底底，就不能“抄书”（我之前就是抄书），而是死抠每一个知识点，一点含糊都会让整个系统崩塌。</p>
+<p>ok，现在开始死抠。什么是闭包？</p>
+<blockquote>
+<p>闭包就是能够读取其他函数内部变量的函数。例如在javascript中，只有函数内部的子函数才能读取局部变量，所以闭包可以理解成“定义在一个函数内部的函数“。在本质上，闭包是将函数内部和函数外部连接起来的桥梁 ——来自于百度百科</p>
+</blockquote>
+<blockquote>
+<p>闭包是基于词法作用域书写代码时所产生的自然结果。当函数可以记住并访问所在的词法作用域时，就产生了闭包。 ————《你不知道的js（上）》</p>
+</blockquote>
+<p>看不太懂，那就拆开看，什么是词法作用域？</p>
+<h2 id="词法作用域"><a href="#词法作用域" class="headerlink" title="词法作用域"></a>词法作用域</h2><p>如图，每个框框中都是一个作用域，引擎在执行<code>console.log()</code>时（黄色框中的语句），会从内向外逐个作用域查找变量。在baz中，我们找到了变量c，没有找到a,b，就会往上一层找，bar中有b,c,baz，找到了b，同名变量c被忽略，以此类推，直至所有执行语句都匹配了变量，否则引擎解析失败抛出错误。</p>
+<p><img src="https://wx3.sinaimg.cn/mw690/6f8e0013ly1g1l3a8vgw1j20ls0dg0ts.jpg" alt="图示"></p>
+<h3 id="除了词法作用域，还有啥？"><a href="#除了词法作用域，还有啥？" class="headerlink" title="除了词法作用域，还有啥？"></a>除了词法作用域，还有啥？</h3><p>其实作用域包括词法作用域和动态作用域，JavaScript中的作用域是词法作用域（大部分的编程语言也是基于词法作用域）。在上面的图中，我们能清晰地看出来，<strong>每个函数的全部变量都可以在整个函数的范围中使用或复用（嵌套的函数可以使用外部函数的变量）</strong>，这就是函数作用域。那么只有函数才能创建作用域“框框”吗？</p>
+<p>我们看下面这几句代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b=<span class="number">0</span>;b&lt;<span class="number">3</span>;b++)&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'b'</span>,b) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure></p>
+<p>上面的代码中，没有声明任何函数，所以通过var声明的变量b被绑定到外部作用域上，也就是全局。(不了解变量提升的同学，可以看我的这篇文章=&gt;<a href="https://www.jianshu.com/p/fe05129e8a4c" target="_blank" rel="noopener">《详解ES6暂存死区TDZ》</a>)，所以上述代码相当于：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b;</span><br><span class="line"><span class="keyword">for</span>(b=<span class="number">0</span>;b&lt;<span class="number">3</span>;b++)&#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'b'</span>,b) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure></p>
+<p>。。。是不是很奇葩，本来只想让变量b在for循环中使用，for循环之后销毁，为啥要让他污染到整个词法作用域嘞？幸运的是，由于人类的探索精神，和几个浏览器爹们对JavaScript这个不健全的儿子的扶持，ES6中有了let和const，作为块作用域的补充。（明明都9012了，我为啥还在写ES6的东西=.=）如下，b在for循环结束时就会被销毁，又由于词法作用域中不存在同名变量，所以这里会报错。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> b=<span class="number">0</span>;b&lt;<span class="number">3</span>;b++)&#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'b'</span>,b) <span class="comment">// Uncaught ReferenceError: b is not defined</span></span><br></pre></td></tr></table></figure></p>
+<p>我们在理解块作用域的时候，可以将一个<code>{}</code>中看成一个块。</p>
+<h3 id="作用域和上下文到底是不是一个东西"><a href="#作用域和上下文到底是不是一个东西" class="headerlink" title="作用域和上下文到底是不是一个东西?"></a>作用域和上下文到底是不是一个东西?</h3><p>答案肯定是”NO!!”上文中我们已经明白了，作用域是在函数定义时决定的。上下文其实就是函数中<code>this</code>的指向，即当前函数运行时所挂载的对象。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a=<span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj=&#123;<span class="attr">a</span>:<span class="number">2</span>,foo&#125;</span><br><span class="line"></span><br><span class="line">foo() <span class="comment">// undefined</span></span><br><span class="line">obj.foo() <span class="comment">// 2</span></span><br></pre></td></tr></table></figure></p>
+<p>这里有个小tips，为啥<code>const</code>声明的a，没有像var一样挂载到<code>window</code>上呢？其实秘密在这里，[《Javascript闭包：从理论到实现，<a href="https://segmentfault.com/a/1190000015311755?utm_source=tag-newest" target="_blank" rel="noopener">[Scopes]]的每一根毛都看得清清楚楚》</a> （写本章时我也没仔细读这篇文章），const 声明的a其实是在<code>[[scopes]]</code>上。</p>
+<h2 id="循环和闭包"><a href="#循环和闭包" class="headerlink" title="循环和闭包"></a>循环和闭包</h2><h3 id="一道经典面试题"><a href="#一道经典面试题" class="headerlink" title="一道经典面试题"></a>一道经典面试题</h3><p>以下代码为什么与预想的输出不符？<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码块1</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i) <span class="comment">// 输出5次5</span></span><br><span class="line">    &#125;, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>假设A：因为<code>setTimeout</code>这块的任务直接进入了事件队列中，所以i循环之后i先变成了5，再执行<code>setTimeout</code>，<code>setTimeout</code>中的箭头函数会保存对i的引用，所以会打印5个5.</p>
+<p>变体一：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码块2</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i) <span class="comment">// 输出 0,1,2,3,4</span></span><br><span class="line">    &#125;, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">``</span><span class="string">` </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">假设结论A成立，那么上式应该也是输出5次5，但是很明显不是，所以结论A并不完全正确。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">那我们去掉循环，先写成最简单的异步代码：</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>js</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(a)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test(<span class="string">'hello'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>执行<code>test</code>，<code>setTimeout</code>将<code>timer</code>函数放入了事件队列，<code>timer</code>保留着<code>test</code>函数的作用域（在函数定义时创建的），<code>test</code>执行完毕，主线程上没有其他任务了，<code>timer</code>从事件队列中出队，执行<code>timer</code>，执行<code>console.log(a)</code>，由于闭包的原因，a依然会保留着之前的引用，输出<code>&#39;hello&#39;</code>。</p>
+<p>那我们在回到题目中，因为两段代码中的不同只有声明语句，所以我们提出假设B：因为在代码块1中，匿名函数保留着外部词法作用域，i都是在全局作用域上，代码块2中由于存在块作用域，所以它保留着每次循环时i的引用。</p>
+<p>变体二：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码块3</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">    (<span class="function">(<span class="params">i</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(i) <span class="comment">// 输出 0,1,2,3,4</span></span><br><span class="line">        &#125;, <span class="number">0</span>)</span><br><span class="line">    &#125;)(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用IIFE传递了变量i给匿名函数，产生了一个新作用域，timer保留着这个作用域链，所以会依次输出。</p>
+<p>变体三：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码块4</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">    (<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(i) <span class="comment">// 输出 5个5</span></span><br><span class="line">        &#125;, <span class="number">0</span>)</span><br><span class="line">    &#125;)()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>跟变体2的区别为IIFE没有给匿名函数传递i，<code>timer</code>保留的作用域链还是全局作用域。</p>
+<h2 id="完"><a href="#完" class="headerlink" title="完"></a>完</h2><p>希望看完的小伙伴可以彻底明白“闭包”，如果有任何错误请在下方评论区留言，欢迎指正。</p>
+<h2 id="推荐文章"><a href="#推荐文章" class="headerlink" title="推荐文章"></a>推荐文章</h2><ol>
+<li><a href="https://www.jianshu.com/p/60ca27e185ec" target="_blank" rel="noopener">深入理解闭包之前置知识—作用域与词法作用域</a></li>
+</ol>
+
+
+<!-- Tags -->
+
+
+
+<div class="tags">
+    <a href="/tags/js/" class="button small">js</a>
+</div>
+
+
+
+<!-- Comments -->
+<div>
+    
+    <hr>
+    <h3>Comments:</h3>
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+</div>
+
+
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+<footer id="footer">
+    <div class="inner">
+        <section>
+            <h2>About</h2>
+            <div>
+                This theme was initially developed by <a href="http://html5up.net" target="_blank">HTML5 UP</a>. It is adapted for Hexo by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>.<br>The source code is available on <a href="https://github.com/klugjo/hexo-theme-phantom" target="_blank">GitHub</a>.
+            </div>
+        </section>
+        <section>
+            <h2>Follow</h2>
+            <ul class="icons">
+                
+                
+                
+                
+                
+                    <li><a href="https://github.com/mytac" class="icon style2 fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                
+                
+                
+                
+                
+            </ul>
+        </section>
+        <ul class="copyright">
+            <li>&copy; Untitled. All rights reserved</li>
+            <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
+            <li>Hexo: <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></li>
+        </ul>
+    </div>
+</footer>
+    </div>
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- skel -->
+<script src="/js/skel.min.js"></script>
+
+<!-- Custom Code -->
+<script src="/js/util.js"></script>
+
+<!--[if lte IE 8]>
+<script src="/js/ie/respond.min.js"></script>
+<![endif]-->
+
+<!-- Custom Code -->
+<script src="/js/main.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'mytac.github.io';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</body>
+
+</html>
